@@ -1,6 +1,7 @@
 import pandas as pd
 
 df=pd.read_csv('spam.csv')
+df = df.sample(3000, random_state=42)  
 print(df.head())
 print("\nColumns:",df.columns)
 print("\nshapes:",df.shape)
@@ -56,4 +57,31 @@ y_pred = model.predict(X_test)
 # Evaluate
 print("Accuracy:", accuracy_score(y_test, y_pred))
 print("\nClassification Report:\n", classification_report(y_test, y_pred))
+
+#display
+# ----- Check a New Email -----
+
+# Take input from the user
+print("\nEnter a new email to check if it's spam:")
+new_email = input("> ")
+
+# Clean the email
+cleaned_email = clean_text(new_email)
+
+# Vectorize it
+vectorized_email = cv.transform([cleaned_email])
+
+# Predict using the trained model
+prediction = model.predict(vectorized_email)
+
+# Show result clearly
+print("\n📩 Original Email:\n", new_email)
+print("\n🧹 Cleaned Email:\n", cleaned_email)
+print("\n📊 Prediction Result:")
+
+if prediction[0] == 1:
+    print("🚨 This email is SPAM!")
+else:
+    print("✅ This email is NOT SPAM.")
+
 
